@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Choose your Ty's House of Color service and view your appointment quote." />
+    <title>Book with Ty | Ty's House of Color</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&family=Parisienne&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .booking-page { min-height: 100vh; background: radial-gradient(circle at 92% 4%, rgba(196,14,19,.19), transparent 24rem), radial-gradient(circle at 4% 90%, rgba(211,164,70,.16), transparent 30rem), #090706; color: #fffaf1; }
+      .booking-shell { width: min(1100px, calc(100% - 2.5rem)); margin: 0 auto; padding: 8.5rem 0 5rem; }
+      .booking-top { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding-bottom: 2.2rem; border-bottom: 1px solid rgba(228,183,89,.28); }
+      .booking-back { color: #f4c96d; font-size: .82rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+      .booking-title { max-width: 700px; margin: .5rem 0 0; font-family: "Cormorant Garamond", serif; font-size: clamp(3rem,6vw,5.5rem); line-height: .93; }
+      .booking-title em { color: #e8b64c; font-style: normal; }
+      .booking-layout { display: grid; grid-template-columns: minmax(0,1.12fr) minmax(300px,.88fr); gap: 2rem; padding-top: 2.5rem; }
+      .booking-card { padding: clamp(1.35rem,4vw,2.5rem); border: 1px solid rgba(228,183,89,.28); border-radius: 1.25rem; background: linear-gradient(145deg, rgba(31,16,15,.93), rgba(9,7,6,.98)); box-shadow: 0 24px 70px rgba(0,0,0,.32); }
+      .booking-card h2 { margin: 0 0 .45rem; font-family: "Cormorant Garamond", serif; font-size: 2.25rem; }
+      .booking-card > p { margin: 0; color: #d4c6b4; }
+      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; margin-top: 1.65rem; }
+      .form-field { display: grid; gap: .45rem; }
+      .form-field.full { grid-column: 1 / -1; }
+      .form-field label { color: #f7dfaa; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .form-field select, .toggle-field { width: 100%; min-height: 3.1rem; padding: .78rem .9rem; color: #fffaf1; border: 1px solid rgba(233,194,112,.35); border-radius: .65rem; background: rgba(255,255,255,.055); font: inherit; }
+      .form-field option { color: #16100d; }
+      .field-hint { margin: 0; color: #bda993; font-size: .8rem; }
+      .is-hidden { display: none; }
+      .toggle-field { display: flex; align-items: center; gap: .65rem; cursor: pointer; font-size: .92rem; }
+      .toggle-field input { width: 1.1rem; height: 1.1rem; accent-color: #c33e32; }
+      .summary-card { position: sticky; top: 1.5rem; align-self: start; }
+      .quote-label { margin: 1.6rem 0 .35rem; color: #d4c6b4; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+      .quote-total { margin: 0; color: #f5c85f; font-family: "Cormorant Garamond", serif; font-size: clamp(3.8rem,8vw,5.6rem); line-height: .85; }
+      .quote-selection { min-height: 2.2rem; margin: .9rem 0 1.4rem; color: #eee2d1; }
+      .payment-lines { display: grid; gap: .8rem; padding: 1.15rem 0; border-top: 1px solid rgba(228,183,89,.24); border-bottom: 1px solid rgba(228,183,89,.24); }
+      .payment-line { display: flex; justify-content: space-between; gap: 1rem; color: #e9ddcc; }
+      .payment-line b { color: #fff8eb; }
+      .deposit-note { margin: 1.15rem 0; color: #d7c3a9; font-size: .9rem; line-height: 1.6; }
+      .booking-cta { display: block; width: 100%; margin-top: 1rem; padding: 1rem; color: #210706; border-radius: .68rem; background: linear-gradient(135deg, #f4cb6c, #c5892d); box-shadow: 0 12px 28px rgba(173,93,20,.22); font-weight: 800; letter-spacing: .04em; text-align: center; }
+      .booking-cta[aria-disabled="true"] { pointer-events: none; opacity: .48; }
+      .secure-note { margin: .85rem 0 0; color: #bca991; font-size: .78rem; line-height: 1.5; text-align: center; }
+      .price-list { margin-top: 2rem; padding-top: 1.7rem; border-top: 1px solid rgba(228,183,89,.22); }
+      .price-list summary { color: #f3c86b; cursor: pointer; font-weight: 700; }
+      .price-list ul { display: grid; gap: .55rem; padding: 1rem 0 0 1.2rem; color: #dbccbb; }
+      @media (max-width: 800px) { .booking-shell { padding-top: 7rem; } .booking-top, .booking-layout { grid-template-columns: 1fr; } .booking-top { display: grid; } .summary-card { position: static; } }
+      @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } .form-field.full { grid-column: auto; } }
+    </style>
+  </head>
+  <body class="booking-page">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Ty's House of Color home"><span class="brand-script">Ty's</span><span class="brand-name">House of Color</span></a>
+      <a class="header-book" href="index.html#services">Services</a>
+    </header>
+    <main class="booking-shell">
+      <div class="booking-top"><div><p class="eyebrow">Appointment quote</p><h1 class="booking-title">Choose your <em>unique</em> look.</h1></div><a class="booking-back" href="index.html">← Back to home</a></div>
+      <div class="booking-layout">
+        <section class="booking-card" aria-labelledby="booking-form-title">
+          <h2 id="booking-form-title">Build your appointment</h2><p>Select a service to see your total before continuing to secure booking.</p>
+          <form id="quote-form"><div class="form-grid">
+            <div class="form-field full"><label for="service">Style or service</label><select id="service" required><option value="">Choose a service</option><option value="box">Box braids — starts at $100</option><option value="knotless">Knotless braids — starts at $110</option><option value="twists">Twists — $120</option><option value="fauxLocs">Faux locs — $120</option><option value="feedin8">8 feed-in cornrows — $75</option><option value="feedin10">10 feed-in cornrows — $85</option><option value="cornrows">Cornrows — $50</option><option value="natural">Natural hair style — $75</option><option value="retwist">Retwist — $45</option></select></div>
+            <div class="form-field is-hidden" id="size-field"><label for="size">Braid size</label><select id="size"><option value="">Choose a size</option><option value="large">Large — +$20</option><option value="medium">Medium — +$25</option><option value="small">Small — +$30</option><option value="xs">XS — +$35</option></select></div>
+            <div class="form-field is-hidden" id="length-field"><label for="length">Braid length</label><select id="length"><option value="">Choose a length</option><option value="above">Above shoulder</option><option value="armpit">Armpit</option><option value="midback">Mid-back</option><option value="waist">Waist</option><option value="xl">XL — past waist</option></select><p class="field-hint" id="length-hint"></p></div>
+            <label class="toggle-field is-hidden full" id="retwist-field"><input id="retwist-style" type="checkbox" />Add a style to the retwist (+$10)</label>
+          </div></form>
+          <details class="price-list"><summary>View current service pricing</summary><ul><li>Box braids — $100; Knotless braids — $110</li><li>Twists and faux locs — $120</li><li>8 / 10 feed-in cornrows — $75 / $85</li><li>Cornrows — $50; Natural hair styles — $75</li><li>Retwist — $45; styling add-on — $10</li><li>Braid size: Large +$20, Medium +$25, Small +$30, XS +$35</li><li>Box and knotless lengths: Above shoulder +$10, Armpit +$20, Mid-back +$25, Waist +$30, XL +$50</li></ul></details>
+        </section>
+        <aside class="booking-card summary-card" aria-live="polite"><p class="eyebrow">Your quote</p><p class="quote-label">Estimated total</p><p class="quote-total" id="quote-total">$0</p><p class="quote-selection" id="quote-selection">Choose a service to begin.</p><div class="payment-lines"><div class="payment-line"><span>Deposit due today</span><b>$10</b></div><div class="payment-line"><span>Due before appointment</span><b id="before">$0</b></div><div class="payment-line"><span>Due after appointment</span><b id="after">$0</b></div></div><p class="deposit-note">Your $10 deposit goes toward your total. The remaining balance is split into two equal payments: one before your appointment and one after.</p><a class="booking-cta" id="booking-cta" href="https://tyshouseofcolor.as.me" target="_blank" rel="noreferrer" aria-disabled="true">Continue to secure booking</a><p class="secure-note">Your name and phone number are collected in the secure booking checkout and saved to your private client list.</p></aside>
+      </div>
+    </main>
+    <script>
+      const serviceData={box:{name:"Box braids",base:100,braided:true,lengthAdds:true},knotless:{name:"Knotless braids",base:110,braided:true,lengthAdds:true},twists:{name:"Twists",base:120,braided:true,lengthAdds:false},fauxLocs:{name:"Faux locs",base:120,braided:true,lengthAdds:false},feedin8:{name:"8 feed-in cornrows",base:75},feedin10:{name:"10 feed-in cornrows",base:85},cornrows:{name:"Cornrows",base:50},natural:{name:"Natural hair style",base:75},retwist:{name:"Retwist",base:45,retwist:true}};
+      const sizePrices={large:20,medium:25,small:30,xs:35},lengthPrices={above:10,armpit:20,midback:25,waist:30,xl:50},lengthNames={above:"Above shoulder",armpit:"Armpit",midback:"Mid-back",waist:"Waist",xl:"XL / past waist"},sizeNames={large:"Large",medium:"Medium",small:"Small",xs:"XS"};
+      const service=document.getElementById("service"),size=document.getElementById("size"),length=document.getElementById("length"),retwistStyle=document.getElementById("retwist-style"),sizeField=document.getElementById("size-field"),lengthField=document.getElementById("length-field"),retwistField=document.getElementById("retwist-field"),lengthHint=document.getElementById("length-hint"),total=document.getElementById("quote-total"),selection=document.getElementById("quote-selection"),before=document.getElementById("before"),after=document.getElementById("after"),bookingCta=document.getElementById("booking-cta");
+      function money(value){return "$"+value.toFixed(2).replace(".00","");}
+      function updateQuote(){const selected=serviceData[service.value],braided=Boolean(selected&&selected.braided);sizeField.classList.toggle("is-hidden",!braided);lengthField.classList.toggle("is-hidden",!braided);retwistField.classList.toggle("is-hidden",!(selected&&selected.retwist));size.required=braided;length.required=braided;lengthHint.textContent=selected&&braided&&!selected.lengthAdds?"Required for appointment planning. Length does not change this style's price.":selected&&braided?"Length changes the total for this style.":"";const ready=selected&&(!braided||(size.value&&length.value));bookingCta.setAttribute("aria-disabled",ready?"false":"true");if(!selected){total.textContent="$0";selection.textContent="Choose a service to begin.";before.textContent="$0";after.textContent="$0";return;}let amount=selected.base,details=[selected.name];if(braided&&size.value){amount+=sizePrices[size.value];details.push(sizeNames[size.value]+" size");}if(braided&&length.value){if(selected.lengthAdds)amount+=lengthPrices[length.value];details.push(lengthNames[length.value]);}if(selected.retwist&&retwistStyle.checked){amount+=10;details.push("with styling");}total.textContent=money(amount);selection.textContent=ready?details.join(" · "):"Choose a required braid size and length to finish your quote.";const remaining=Math.max(0,amount-10);before.textContent=ready?money(remaining/2):"$0";after.textContent=ready?money(remaining/2):"$0";}
+      [service,size,length,retwistStyle].forEach(field=>field.addEventListener("change",updateQuote));bookingCta.addEventListener("click",event=>{if(bookingCta.getAttribute("aria-disabled")==="true")event.preventDefault();});updateQuote();
+    </script>
+  </body>
+</html>
