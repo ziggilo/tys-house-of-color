@@ -1,4 +1,135 @@
-<!doctype html>
+<script>
+(() => {
+  const adminEmail = "tyrinolivia2017@gmail.com";
+  const username = "tyrinolivia";
+  const userHandle = new TextEncoder().encode(username);
+  const sessionKey = "tysHouseAdminPasskeyUnlocked";
+  const localIdKey = "tysHouseAdminPasskeyId";
+
+  const supported = () => Boolean(window.PublicKeyCredential && navigator.credentials);
+  const randomBytes = () => crypto.getRandomValues(new Uint8Array(32));
+  const handleMatches = value => {
+    if (!value) return false;
+    try { return new TextDecoder().decode(value) === username; } catch { return false; }
+  };
+  const passkeyError = error => error && error.name === "NotAllowedError"
+    ? "Face ID, Touch ID, or your device lock was not confirmed."
+    : "This passkey could not be used on this device.";
+  const ready = () => {
+    const panel = document.getElementById("admin-panel");
+    return panel && !panel.classList.contains("hidden") && document.body.textContent.includes("Signed in as " + adminEmail);
+  };
+  const signOut = () => Array.from(document.querySelectorAll("button")).find(button => button.textContent.trim() === "Sign out");
+
+  function addStyles() {
+    if (document.getElementById("passkey-style")) return;
+    const style = document.createElement("style");
+    style.id = "passkey-style";
+    style.textContent = ".passkey-locked > header,.passkey-locked > main{filter:blur(10px);pointer-events:none;user-select:none}.passkey-gate{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:1.25rem;background:rgba(10,5,5,.76);backdrop-filter:blur(8px)}.passkey-card{width:min(31rem,100%);padding:1.5rem;border:1px solid rgba(243,200,107,.55);border-radius:1rem;background:#160b09;color:#fff8eb;box-shadow:0 24px 70px rgba(0,0,0,.55)}.passkey-card h2{margin:.15rem 0;color:#f3c86b;font-family:Georgia,serif}.passkey-card p{line-height:1.55;color:#d7c3a9}.passkey-card .actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.1rem}.passkey-card button{border:0;border-radius:.55rem;background:linear-gradient(135deg,#f4cb6c,#c5892d);color:#210706;font:inherit;font-weight:800;padding:.85rem 1rem;cursor:pointer}.passkey-card button.secondary{background:transparent;color:#f3c86b;border:1px solid rgba(228,183,89,.45)}.passkey-card .status{min-height:1.2rem;margin:.9rem 0 0;color:#d7c3a9}.passkey-card .status.error{color:#ffaba5}";
+    document.head.appendChild(style);
+  }
+
+  function removeGate() {
+    document.body.classList.remove("passkey-locked");
+    document.getElementById("admin-passkey-gate")?.remove();
+  }
+
+  async function createPasskey(status) {
+    if (!supported()) throw new Error("Passkeys are not supported in this browser.");
+    status.textContent = "Confirm with Face ID, Touch ID, or your device lock to save your passkey.";
+    status.className = "status";
+    const credential = await navigator.credentials.create({ publicKey: {
+      challenge: randomBytes(),
+      rp: { name: "Ty's House of Color", id: location.hostname },
+      user: { id: userHandle, name: username, displayName: "Tyrin Olivia" },
+      pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+      authenticatorSelection: { residentKey: "required", userVerification: "required" },
+      timeout: 60000,
+      attestation: "none"
+    }});
+    if (!credential) throw new Error("No passkey was created.");
+    localStorage.setItem(localIdKey, credential.id);
+    sessionStorage.setItem(sessionKey, "1");
+    status.textContent = "Passkey saved. Your admin calendar is unlocked.";
+    status.className = "status success";
+    setTimeout(removeGate, 450);
+  }
+
+  async function usePasskey(status) {
+    if (!supported()) throw new Error("Passkeys are not supported in this browser.");
+    status.textContent = "Use Face ID, Touch ID, or your device lock to continue.";
+    status.className = "status";
+    const assertion = await navigator.credentials.get({ publicKey: {
+      challenge: randomBytes(),
+      rpId: location.hostname,
+      userVerification: "required",
+      timeout: 60000
+    }});
+    const savedId = localStorage.getItem(localIdKey);
+    if (!assertion || (!handleMatches(assertion.response.userHandle) && assertion.id !== savedId)) {
+      throw new Error("This passkey does not belong to the Ty's House of Color administrator account.");
+    }
+    sessionStorage.setItem(sessionKey, "1");
+    status.textContent = "Identity confirmed. Opening your calendar...";
+    status.className = "status success";
+    setTimeout(removeGate, 250);
+  }
+
+  function showGate() {
+    if (document.getElementById("admin-passkey-gate") || sessionStorage.getItem(sessionKey) === "1") return;
+    addStyles();
+    document.body.classList.add("passkey-locked");
+    const gate = document.createElement("section");
+    gate.id = "admin-passkey-gate";
+    gate.className = "passkey-gate";
+    gate.innerHTML = '<div class="passkey-card" role="dialog" aria-modal="true" aria-labelledby="passkey-title"><p class="eyebrow">Administrator access</p><h2 id="passkey-title">Unlock with your passkey</h2><p>Use Face ID, Touch ID, or your device’s screen lock. Your device password is never shared with this website.</p><div class="actions"><button type="button" id="use-admin-passkey">Use passkey</button><button type="button" class="secondary" id="create-admin-passkey">Set up passkey on this device</button></div><p class="status" id="passkey-status"></p><button type="button" class="secondary" id="passkey-recovery" style="margin-top:.4rem">Use recovery email instead</button></div>';
+    document.body.appendChild(gate);
+    const status = gate.querySelector("#passkey-status");
+    gate.querySelector("#use-admin-passkey").addEventListener("click", async () => {
+      try { await usePasskey(status); } catch (error) { status.textContent = passkeyError(error); status.className = "status error"; }
+    });
+    gate.querySelector("#create-admin-passkey").addEventListener("click", async () => {
+      try { await createPasskey(status); } catch (error) { status.textContent = passkeyError(error); status.className = "status error"; }
+    });
+    gate.querySelector("#passkey-recovery").addEventListener("click", () => {
+      removeGate();
+      const button = signOut();
+      if (button) button.click();
+    });
+  }
+
+  function addAccountControl() {
+    if (document.getElementById("add-passkey-account")) return;
+    const button = signOut();
+    if (!button) return;
+    const control = document.createElement("button");
+    control.id = "add-passkey-account";
+    control.type = "button";
+    control.className = "secondary";
+    control.textContent = "Add or replace passkey";
+    control.style.marginRight = ".6rem";
+    control.addEventListener("click", async () => {
+      try {
+        const note = document.createElement("p");
+        note.className = "status";
+        button.parentElement?.appendChild(note);
+        await createPasskey(note);
+      } catch (error) { alert(passkeyError(error)); }
+    });
+    button.parentElement?.insertBefore(control, button);
+  }
+
+  const timer = setInterval(() => {
+    if (!ready()) return;
+    clearInterval(timer);
+    addStyles();
+    addAccountControl();
+    showGate();
+  }, 250);
+})();
+</script>
+</body>
+</html><!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
