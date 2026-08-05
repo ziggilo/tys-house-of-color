@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Book a nail appointment with Ty's House of Color." />
+    <title>Book Nails | Ty's House of Color</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&family=Parisienne&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .booking-page { min-height: 100vh; background: radial-gradient(circle at 92% 4%, rgba(196,14,19,.19), transparent 24rem), radial-gradient(circle at 4% 90%, rgba(211,164,70,.16), transparent 30rem), #090706; color: #fffaf1; }
+      .booking-shell { width: min(1100px, calc(100% - 2.5rem)); margin: 0 auto; padding: 8.5rem 0 5rem; }
+      .booking-top { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding-bottom: 2.2rem; border-bottom: 1px solid rgba(228,183,89,.28); }
+      .booking-back { color: #f4c96d; font-size: .82rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+      .booking-title { max-width: 700px; margin: .5rem 0 0; font-family: "Cormorant Garamond", serif; font-size: clamp(3rem,6vw,5.5rem); line-height: .93; }
+      .booking-title em { color: #e8b64c; font-style: normal; }
+      .booking-layout { display: grid; grid-template-columns: minmax(0,1.12fr) minmax(300px,.88fr); gap: 2rem; padding-top: 2.5rem; }
+      .booking-card { padding: clamp(1.35rem,4vw,2.5rem); border: 1px solid rgba(228,183,89,.28); border-radius: 1.25rem; background: linear-gradient(145deg, rgba(31,16,15,.93), rgba(9,7,6,.98)); box-shadow: 0 24px 70px rgba(0,0,0,.32); }
+      .booking-card h2 { margin: 0 0 .45rem; font-family: "Cormorant Garamond", serif; font-size: 2.25rem; }
+      .booking-card > p { margin: 0; color: #d4c6b4; }
+      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; margin-top: 1.65rem; }
+      .form-field { display: grid; gap: .45rem; }
+      .form-field.full { grid-column: 1 / -1; }
+      .form-field label { color: #f7dfaa; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .form-field select, .form-field input[type="text"], .form-field textarea, .toggle-field { width: 100%; min-height: 3.1rem; padding: .78rem .9rem; color: #fffaf1; border: 1px solid rgba(233,194,112,.35); border-radius: .65rem; background: rgba(255,255,255,.055); font: inherit; }
+      .form-field input[type="text"]::placeholder, .form-field textarea::placeholder { color: #aa9986; }
+      .form-field textarea { min-height: 7.25rem; resize: vertical; line-height: 1.45; }
+      .policy-box { margin: 1rem 0 1.35rem; padding: 1rem; border: 1px solid rgba(228,183,89,.4); border-radius: .85rem; background: rgba(241,190,87,.08); }
+      .policy-box h3 { margin: 0 0 .55rem; color: #f7dfaa; font-family: "Cormorant Garamond", serif; font-size: 1.25rem; }
+      .policy-box ul { display: grid; gap: .48rem; margin: 0; padding-left: 1.15rem; color: #e4d4c0; font-size: .86rem; line-height: 1.45; }
+      .form-field option { color: #16100d; }
+      .field-hint { margin: 0; color: #bda993; font-size: .8rem; }
+      .is-hidden { display: none; }
+      .toggle-field { display: flex; align-items: center; gap: .65rem; cursor: pointer; font-size: .92rem; }
+      .toggle-field input { width: 1.1rem; height: 1.1rem; accent-color: #c33e32; }
+      .summary-card { position: sticky; top: 1.5rem; align-self: start; }
+      .quote-label { margin: 1.6rem 0 .35rem; color: #d4c6b4; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+      .quote-total { margin: 0; color: #f5c85f; font-family: "Cormorant Garamond", serif; font-size: clamp(3.8rem,8vw,5.6rem); line-height: .85; }
+      .quote-selection { min-height: 2.2rem; margin: .9rem 0 1.4rem; color: #eee2d1; }
+      .payment-lines { display: grid; gap: .8rem; padding: 1.15rem 0; border-top: 1px solid rgba(228,183,89,.24); border-bottom: 1px solid rgba(228,183,89,.24); }
+      .payment-line { display: flex; justify-content: space-between; gap: 1rem; color: #e9ddcc; }
+      .payment-line b { color: #fff8eb; }
+      .deposit-note { margin: 1.15rem 0; color: #d7c3a9; font-size: .9rem; line-height: 1.6; }
+      .booking-cta { display: block; width: 100%; margin-top: 1rem; padding: 1rem; color: #210706; border-radius: .68rem; background: linear-gradient(135deg, #f4cb6c, #c5892d); box-shadow: 0 12px 28px rgba(173,93,20,.22); font-weight: 800; letter-spacing: .04em; text-align: center; }
+      .booking-cta[aria-disabled="true"] { pointer-events: none; opacity: .48; }
+      .secure-note { margin: .85rem 0 0; color: #bca991; font-size: .78rem; line-height: 1.5; text-align: center; }
+      .price-list { margin-top: 2rem; padding-top: 1.7rem; border-top: 1px solid rgba(228,183,89,.22); }
+      .price-list summary { color: #f3c86b; cursor: pointer; font-weight: 700; }
+      .price-list ul { display: grid; gap: .55rem; padding: 1rem 0 0 1.2rem; color: #dbccbb; }
+
+      .form-field input[type="email"], .form-field input[type="tel"], .form-field input[type="date"] { width: 100%; padding: .82rem .9rem; color: #fff8eb; background: rgba(255,255,255,.045); border: 1px solid rgba(228,183,89,.35); border-radius: .5rem; font: inherit; }
+      .availability-panel { padding: 1rem; border: 1px solid rgba(228,183,89,.3); border-radius: .7rem; background: rgba(0,0,0,.18); }
+      .availability-panel h3 { margin: 0 0 .35rem; color: #f3c86b; font-size: 1rem; }
+      .availability-help, .booking-status { margin: .4rem 0 0; color: #d7c3a9; font-size: .85rem; line-height: 1.5; }
+      .slot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: .65rem; margin-top: .9rem; }
+      .time-slot { padding: .75rem .55rem; border: 1px solid rgba(228,183,89,.34); border-radius: .5rem; background: rgba(255,255,255,.04); color: #fff8eb; cursor: pointer; font: inherit; font-weight: 700; }
+      .time-slot:hover, .time-slot.is-selected { border-color: #f4cb6c; background: rgba(196,31,24,.34); color: #fff; }
+      .time-slot:disabled { opacity: .42; cursor: not-allowed; text-decoration: line-through; }
+      .booking-status.is-error { color: #ffaba5; } .booking-status.is-success { color: #9ee2b5; }
+
+      @media (max-width: 800px) { .booking-shell { padding-top: 7rem; } .booking-top, .booking-layout { grid-template-columns: 1fr; } .booking-top { display: grid; } .summary-card { position: static; } }
+      @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } .form-field.full { grid-column: auto; } }
+    </style>
+  </head>
+  <body class="booking-page">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Ty's House of Color home"><span class="brand-script">Ty's</span><span class="brand-name">House of Color</span></a>
+      <a class="header-book" href="index.html#services">Services</a>
+    </header>
+    <main class="booking-shell">
+      <div class="booking-top"><div><p class="eyebrow">Appointment quote</p><h1 class="booking-title">Book your <em>nail</em> appointment.</h1></div><a class="booking-back" href="index.html">← Back to home</a></div>
+      <div class="booking-layout">
+        <section class="booking-card" aria-labelledby="booking-form-title">
+          <h2 id="booking-form-title">Build your nail appointment</h2><p>Choose your nail service to see your total before continuing to secure booking.</p>
+          <form id="quote-form"><div class="form-grid">
+            <div class="form-field full is-hidden"><label for="service">Service category</label><select id="service" required><option value="nails" selected>Nail services</option></select></div>
+            <div class="form-field full is-hidden" id="nail-service-field"><label for="nail-service">Nail service</label><select id="nail-service"><option value="">Choose a nail service</option><option value="gel">Gel manicure — $20</option><option value="fullset">Full set — choose length</option><option value="fill">Fill-in — $20</option><option value="house">House Special — $60 flat</option></select><p class="field-hint">Ty specializes in Polygel and gel manicure services.</p></div>
+            <div class="form-field is-hidden" id="nail-length-field"><label for="nail-length">Full-set length</label><select id="nail-length"><option value="">Choose a length</option><option value="small">Short — $25</option><option value="medium">Medium — $30</option><option value="long">Long — $40</option><option value="xl">XL — $45</option></select></div>
+            <label class="toggle-field full is-hidden" id="nail-breakage-field"><input id="nail-breakage" type="checkbox" />I have 3 or more broken nails and need a new full set.</label>
+            <div class="form-field full is-hidden" id="nail-design-field"><label for="nail-design">Nail-art add-on (optional)</label><select id="nail-design"><option value="">No design add-on</option><option value="handdrawn">Unlimited hand-drawn art — +$10 per hand</option><option value="threeD">Unlimited 3D art — +$15 per hand</option><option value="stickers">Unlimited stickers — +$10 per hand</option><option value="rhinestones">Unlimited rhinestones — +$10 flat</option><option value="freestyle">Unlimited freestyle design — +$30 flat</option></select></div><div class="form-field full is-hidden" id="house-special-details-field"><label for="house-special-preference">House Special — choose your focus</label><select id="house-special-preference"><option value="">Choose length or shape</option><option value="length">I would like to choose the length</option><option value="shape">I would like to choose the shape</option></select><p class="field-hint">Ty creates the design for every House Special.</p></div>
+            <div class="form-field is-hidden" id="nail-hands-field"><label for="nail-hands">Hands for nail art</label><select id="nail-hands"><option value="">Choose one or both hands</option><option value="1">One hand</option><option value="2">Both hands</option></select></div>
+            <div class="form-field full is-hidden" id="natural-style-field"><label for="natural-style">Natural style or service</label><select id="natural-style"><option value="">Choose a natural style or service</option><option value="prepart">Pre-parting — starts at $20</option><option value="cornrows">Cornrows — $50</option><option value="twistStyle">Twist &amp; style — $75</option><option value="naturalStyle">Natural style (Bantu knots, plaits, etc.) — $75</option></select></div>
+            <div class="form-field is-hidden" id="size-field"><label for="size">Braid size</label><select id="size"><option value="">Choose a size</option><option value="large">Large — +$20</option><option value="medium">Medium — +$25</option><option value="small">Small — +$30</option><option value="xs">XS — +$35</option></select></div>
+            <div class="form-field is-hidden" id="length-field"><label for="length">Braid length</label><select id="length"><option value="">Choose a length</option><option value="above">Above shoulder</option><option value="armpit">Armpit</option><option value="midback">Mid-back</option><option value="waist">Waist</option><option value="xl">XL — past waist</option></select><p class="field-hint" id="length-hint"></p></div>
+            <div class="form-field is-hidden" id="prepart-size-field"><label for="prepart-size">Pre-parting size</label><select id="prepart-size"><option value="">Choose a size</option><option value="large">Large — included with $20 base</option><option value="medium">Medium — +$5</option><option value="small">Small — +$10</option><option value="xs">XS — +$15</option></select><p class="field-hint">Large pre-parting is included in the $20 base price.</p></div>
+            <label class="toggle-field is-hidden full" id="retwist-field"><input id="retwist-style" type="checkbox" />Add a style to the retwist (+$10)</label>
+            <div class="form-field full" id="hair-addons-field"><label for="curl-style">French curl hair or boho (optional)</label><select id="curl-style"><option value="">No curl or boho add-on</option><option value="french">French curl hair — +$10</option><option value="boho">Boho — +$10</option></select></div>
+            <label class="toggle-field full" id="pick-and-drop-field"><input id="pick-and-drop" type="checkbox" />Add pick &amp; drop braids (+$15)</label>
+            <label class="toggle-field full" id="hair-provided-field"><input id="hair-provided" type="checkbox" />I need hair provided (+$10)</label>
+            <div class="form-field full is-hidden" id="hair-specs-field"><label for="hair-specs">Hair specifications</label><input id="hair-specs" type="text" placeholder="Color, preferred length, or other hair details" /></div>
+            <div class="form-field full"><label for="accessories">Accessories (optional)</label><input id="accessories" type="text" placeholder="Beads, tinsel, charms, or other accessories" /></div>
+            <div class="form-field full"><label id="appointment-notes-label" for="appointment-notes">Anything else Ty should know? (optional)</label><textarea id="appointment-notes" rows="4" placeholder="Hair condition, trim request, S4S (service for service), guests, or anything else you would like to mention"></textarea><p class="field-hint" id="appointment-notes-hint">Please include any details that will help Ty prepare for your appointment.</p></div>
+          
+            <div class="form-field"><label for="client-first-name">First name</label><input id="client-first-name" type="text" autocomplete="given-name" required /></div>
+            <div class="form-field"><label for="client-last-name">Last name</label><input id="client-last-name" type="text" autocomplete="family-name" required /></div>
+            <div class="form-field"><label for="client-email">Email</label><input id="client-email" type="email" autocomplete="email" required /></div>
+            <div class="form-field"><label for="client-phone">Phone number</label><input id="client-phone" type="tel" autocomplete="tel" inputmode="tel" required /></div>
+            <div class="form-field full"><label for="appointment-date">Choose your appointment date</label><input id="appointment-date" type="date" required /><div class="availability-panel"><h3>Available times</h3><p class="availability-help" id="availability-help">Choose a date to see Ty’s open times. Hair and nail appointments share the same calendar.</p><div class="slot-grid" id="slot-grid" aria-live="polite"></div></div><input id="appointment-time" type="hidden" required /></div>
+          </div></form>
+          <details class="price-list"><summary>View nail service pricing</summary><ul><li>Gel manicure — $20</li><li>Full set: Short — $25, Medium — $30, Long — $40, XL — $45</li><li>Fill-in — $20; House Special — $60</li><li>Unlimited nail art: Hand-drawn — +$10 per hand; 3D — +$15 per hand; Stickers — +$10 per hand; Rhinestones — +$10 flat; Freestyle — +$30 flat</li></ul></details>
+        </section>
+        <aside class="booking-card summary-card" aria-live="polite"><p class="eyebrow">Your quote</p><div class="policy-box"><h3>Before your appointment</h3><ul id="hair-appointment-policy"><li>Please come washed and conditioned. Blow-dry services are included.</li><li>The first half of your remaining balance is due before your service begins; the second half is due after the service is completed.</li><li>Deposits are non-refundable.</li><li>Arrivals 30 minutes late without prior communication will be canceled and require a new appointment.</li><li>Bringing one or two guests? Please let Ty know. Food will be provided.</li><li>Participating in S4S? Mention it in the description so your final total can be adjusted.</li></ul><ul id="nail-appointment-policy" class="is-hidden"><li>Please arrive with clean hands and nails. If you have 3 or more broken nails, a new full set is required.</li><li>The first half of your remaining balance is due before your service begins; the second half is due after the service is completed.</li><li>Deposits are non-refundable.</li><li>Arrivals 30 minutes late without prior communication will be canceled and require a new appointment.</li><li>Bringing one or two guests? Please let Ty know. Food will be provided.</li><li>Please include any design requests or allergies in the notes below.</li></ul></div><p class="quote-label">Estimated total</p><p class="quote-total" id="quote-total">$0</p><p class="quote-selection" id="quote-selection">Choose a service to begin.</p><div class="payment-lines"><div class="payment-line"><span>Deposit due today</span><b>$10</b></div><div class="payment-line"><span>Due before appointment</span><b id="before">$0</b></div><div class="payment-line"><span>Due after appointment</span><b id="after">$0</b></div></div><p class="deposit-note">Your $10 deposit goes toward your total. The remaining balance is split into two equal payments: one before your appointment and one after.</p><a class="booking-cta" id="booking-cta" href="https://book.stripe.com/5kQ3cu4YF8VZeJ84re48000" target="_blank" rel="noreferrer" aria-disabled="true">Reserve your time &amp; pay $10 deposit</a><p class="secure-note">Choose an open time, then reserve it and pay your $10 deposit securely through Stripe. Ty will confirm your appointment details after payment.</p></aside>
+      </div>
+    </main>
+    <script>
+      (() => {
+        const service = document.getElementById("service");
+        const hairPolicy = document.getElementById("hair-appointment-policy");
+        const nailPolicy = document.getElementById("nail-appointment-policy");
+        const notesLabel = document.getElementById("appointment-notes-label");
+        const notes = document.getElementById("appointment-notes");
+        const notesHint = document.getElementById("appointment-notes-hint");
+        function updateBookingContext() {
+          const isNails = service.value === "nails";
+          hairPolicy.classList.toggle("is-hidden", isNails);
+          nailPolicy.classList.toggle("is-hidden", !isNails);
+          notesLabel.textContent = isNails ? "Nail design request, allergies, or notes (optional)" : "Anything else Ty should know? (optional)";
+          notes.placeholder = isNails ? "Describe your requested design, any allergies or sensitivities, and anything else Ty should know." : "Hair condition, trim request, S4S (service for service), guests, or anything else you would like to mention";
+          notesHint.textContent = isNails ? "Please share any design details or allergy information that will help Ty prepare." : "Please include any details that will help Ty prepare for your appointment.";
+        }
+        service.addEventListener("change", updateBookingContext);
+        updateBookingContext();
+      })();
+    </script>
+    <script>
+      const serviceData={box:{name:"Box braids",base:100,braided:true,lengthAdds:true},knotless:{name:"Knotless braids",base:110,braided:true,lengthAdds:true},twists:{name:"Twists",base:120,braided:true,lengthAdds:false},fauxLocs:{name:"Faux locs",base:120,braided:true,lengthAdds:false},feedin8:{name:"8 feed-in cornrows",base:75},feedin10:{name:"10 feed-in cornrows",base:85},cornrows:{name:"Cornrows",base:50},natural:{name:"Natural hair style",base:75},retwist:{name:"Retwist",base:45,retwist:true},nails:{name:"Nail appointment",base:0,nails:true}};
+      const sizePrices={large:20,medium:25,small:30,xs:35},lengthPrices={above:10,armpit:20,midback:25,waist:30,xl:50},lengthNames={above:"Above shoulder",armpit:"Armpit",midback:"Mid-back",waist:"Waist",xl:"XL / past waist"},sizeNames={large:"Large",medium:"Medium",small:"Small",xs:"XS"};
+      const service=document.getElementById("service"),size=document.getElementById("size"),length=document.getElementById("length"),retwistStyle=document.getElementById("retwist-style"),hairProvided=document.getElementById("hair-provided"),hairSpecs=document.getElementById("hair-specs"),accessories=document.getElementById("accessories"),sizeField=document.getElementById("size-field"),lengthField=document.getElementById("length-field"),retwistField=document.getElementById("retwist-field"),hairSpecsField=document.getElementById("hair-specs-field"),lengthHint=document.getElementById("length-hint"),total=document.getElementById("quote-total"),selection=document.getElementById("quote-selection"),before=document.getElementById("before"),after=document.getElementById("after"),bookingCta=document.getElementById("booking-cta");
+      function money(value){return "$"+value.toFixed(2).replace(".00","");}
+      function updateQuote(){const selected=serviceData[service.value],braided=Boolean(selected&&selected.braided);sizeField.classList.toggle("is-hidden",!braided);lengthField.classList.toggle("is-hidden",!braided);retwistField.classList.toggle("is-hidden",!(selected&&selected.retwist));hairSpecsField.classList.toggle("is-hidden",!hairProvided.checked);size.required=braided;length.required=braided;hairSpecs.required=hairProvided.checked;lengthHint.textContent=selected&&braided&&!selected.lengthAdds?"Required for appointment planning. Length does not change this style's price.":selected&&braided?"Length changes the total for this style.":"";const ready=selected&&(!braided||(size.value&&length.value))&&(!hairProvided.checked||hairSpecs.value.trim());bookingCta.setAttribute("aria-disabled",ready?"false":"true");if(!selected){total.textContent="$0";selection.textContent="Choose a service to begin.";before.textContent="$0";after.textContent="$0";return;}let amount=selected.base,details=[selected.name];if(braided&&size.value){amount+=sizePrices[size.value];details.push(sizeNames[size.value]+" size");}if(braided&&length.value){if(selected.lengthAdds)amount+=lengthPrices[length.value];details.push(lengthNames[length.value]);}if(selected.retwist&&retwistStyle.checked){amount+=10;details.push("with styling");}if(hairProvided.checked){amount+=10;details.push("hair provided");if(hairSpecs.value.trim())details.push("hair: "+hairSpecs.value.trim());}if(accessories.value.trim())details.push("accessories: "+accessories.value.trim());total.textContent=money(amount);selection.textContent=ready?details.join(" · "):hairProvided.checked&&!hairSpecs.value.trim()?"Add your hair specifications to finish your quote.":"Choose a required braid size and length to finish your quote.";const remaining=Math.max(0,amount-10);before.textContent=ready?money(remaining/2):"$0";after.textContent=ready?money(remaining/2):"$0";}
+      [service,size,length,retwistStyle,hairProvided].forEach(field=>field.addEventListener("change",updateQuote));[hairSpecs,accessories].forEach(field=>field.addEventListener("input",updateQuote));bookingCta.addEventListener("click",event=>{if(bookingCta.getAttribute("aria-disabled")==="true")event.preventDefault();});updateQuote();
+    </script>
+
+    <script>
+      (() => {
+        const naturalField = document.getElementById("natural-style-field"), natural = document.getElementById("natural-style");
+        const prepartField = document.getElementById("prepart-size-field"), prepart = document.getElementById("prepart-size");
+        const curl = document.getElementById("curl-style"), pick = document.getElementById("pick-and-drop");
+        const serviceEl = document.getElementById("service"), sizeEl = document.getElementById("size"), lengthEl = document.getElementById("length"), hair = document.getElementById("hair-provided"), hairNotes = document.getElementById("hair-specs"), accessoryNotes = document.getElementById("accessories"), appointmentNotes = document.getElementById("appointment-notes"), retwist = document.getElementById("retwist-style");
+        const sizeFieldEl = document.getElementById("size-field"), lengthFieldEl = document.getElementById("length-field"), totalEl = document.getElementById("quote-total"), selectionEl = document.getElementById("quote-selection"), beforeEl = document.getElementById("before"), afterEl = document.getElementById("after"), cta = document.getElementById("booking-cta");
+        const base = {box:["Box braids",100,true,true],knotless:["Knotless braids",110,true,true],twists:["Twists",120,true,false],fauxLocs:["Faux locs",120,true,false],feedin8:["8 feed-in cornrows",75,false,false],feedin10:["10 feed-in cornrows",85,false,false],retwist:["Retwist",45,false,false],nails:["Nail appointment",0,false,false]};
+        const naturalBase = {prepart:["Pre-parting",20,true],cornrows:["Cornrows",50,false],twistStyle:["Twist & style",75,false],naturalStyle:["Natural style",75,false]};
+        const sizePrices = {large:20,medium:25,small:30,xs:35}, prepartPrices = {large:0,medium:5,small:10,xs:15}, lengthPrices = {above:10,armpit:20,midback:25,waist:30,xl:50}, sizeNames = {large:"Large",medium:"Medium",small:"Small",xs:"XS"}, lengthNames = {above:"Above shoulder",armpit:"Armpit",midback:"Mid-back",waist:"Waist",xl:"XL / past waist"};
+        const cash = n => "$" + n.toFixed(2).replace(".00","");
+        function recalc() {
+          const isNatural = serviceEl.value === "natural";
+          naturalField.classList.toggle("is-hidden", !isNatural);
+          const item = isNatural ? naturalBase[natural.value] : base[serviceEl.value];
+          const preparting = Boolean(item && isNatural && item[2]), braided = Boolean(item && item[2] && !isNatural), lengthAdds = Boolean(item && item[3]);
+          prepartField.classList.toggle("is-hidden", !preparting);
+          sizeFieldEl.classList.toggle("is-hidden", !braided);
+          lengthFieldEl.classList.toggle("is-hidden", !braided);
+          natural.required = isNatural; prepart.required = preparting; sizeEl.required = braided; lengthEl.required = braided;
+          if (!item) {
+            totalEl.textContent = "$0"; beforeEl.textContent = "$0"; afterEl.textContent = "$0";
+            selectionEl.textContent = isNatural ? "Choose a natural style or service to begin." : "Choose a service to begin.";
+            cta.setAttribute("aria-disabled","true"); return;
+          }
+          const ready = (!braided || (sizeEl.value && lengthEl.value)) && (!preparting || prepart.value) && (!hair.checked || hairNotes.value.trim());
+          let amount = item[1], details = [item[0]];
+          if (braided && sizeEl.value) { amount += sizePrices[sizeEl.value]; details.push(sizeNames[sizeEl.value] + " size"); }
+          if (braided && lengthEl.value) { if (lengthAdds) amount += lengthPrices[lengthEl.value]; details.push(lengthNames[lengthEl.value]); }
+          if (preparting && prepart.value) { amount += prepartPrices[prepart.value]; details.push(sizeNames[prepart.value] + " pre-parting"); }
+          if (serviceEl.value === "retwist" && retwist.checked) { amount += 10; details.push("with styling"); }
+          if (curl.value) { amount += 10; details.push(curl.value === "french" ? "French curl hair" : "boho"); }
+          if (pick.checked) { amount += 15; details.push("pick & drop braids"); }
+          if (hair.checked) { amount += 10; details.push("hair provided"); if (hairNotes.value.trim()) details.push("hair: " + hairNotes.value.trim()); }
+          if (accessoryNotes.value.trim()) details.push("accessories: " + accessoryNotes.value.trim());
+          if (appointmentNotes.value.trim()) details.push("notes added");
+          totalEl.textContent = cash(amount); cta.setAttribute("aria-disabled", ready ? "false" : "true");
+          selectionEl.textContent = ready ? details.join(" · ") : hair.checked && !hairNotes.value.trim() ? "Add your hair specifications to finish your quote." : preparting ? "Choose a pre-parting size to finish your quote." : "Choose a required braid size and length to finish your quote.";
+          const remaining = Math.max(0, amount - 10); beforeEl.textContent = ready ? cash(remaining / 2) : "$0"; afterEl.textContent = ready ? cash(remaining / 2) : "$0";
+        }
+        [serviceEl,natural,sizeEl,lengthEl,prepart,retwist,curl,pick,hair].forEach(el => el.addEventListener("change", () => setTimeout(recalc)));
+        [hairNotes,accessoryNotes,appointmentNotes].forEach(el => el.addEventListener("input", () => setTimeout(recalc)));
+        recalc();
+      })();
+    </script>
+    <script>
+      (() => {
+        const service = document.getElementById("service"), nailService = document.getElementById("nail-service"), nailLength = document.getElementById("nail-length"), nailDesign = document.getElementById("nail-design"), nailHands = document.getElementById("nail-hands"), nailBreakage = document.getElementById("nail-breakage"), houseSpecialPreference = document.getElementById("house-special-preference");
+        const show = id => document.getElementById(id);
+        const nailFields = ["nail-service-field","nail-length-field","nail-breakage-field","nail-design-field","house-special-details-field","nail-hands-field"];
+        const hairOnlyFields = ["hair-addons-field","pick-and-drop-field","hair-provided-field"];
+        const total = document.getElementById("quote-total"), selection = document.getElementById("quote-selection"), before = document.getElementById("before"), after = document.getElementById("after"), cta = document.getElementById("booking-cta");
+        const cash = value => "$" + value.toFixed(2).replace(".00","");
+        const fullSetPrices = {small:25,medium:30,long:40,xl:45};
+        const fullSetNames = {small:"Short",medium:"Medium",long:"Long",xl:"XL"};
+        const art = {handdrawn:{name:"unlimited hand-drawn art",price:10,perHand:true},threeD:{name:"unlimited 3D art",price:15,perHand:true},stickers:{name:"unlimited stickers",price:10,perHand:true},rhinestones:{name:"unlimited rhinestones",price:10},freestyle:{name:"unlimited freestyle design",price:30}};
+        const nailServices = {gel:{name:"Gel manicure",price:20},fullset:{name:"Full set",price:0},fill:{name:"Fill-in",price:20},house:{name:"House Special",price:60}};
+        function updateNailQuote() {
+          const isNail = service.value === "nails";
+          nailFields.forEach(id => show(id).classList.toggle("is-hidden", !isNail));
+          hairOnlyFields.forEach(id => show(id).classList.toggle("is-hidden", isNail));
+          show("hair-specs-field").classList.toggle("is-hidden", isNail || !document.getElementById("hair-provided").checked);
+          if (!isNail) {
+            nailService.required = nailLength.required = nailHands.required = false;
+            return;
+          }
+          const chosen = nailServices[nailService.value];
+          const isFullSet = nailService.value === "fullset";
+          const houseSpecial = nailService.value === "house";
+          show("nail-length-field").classList.toggle("is-hidden", !isFullSet);
+          show("nail-breakage-field").classList.toggle("is-hidden", !isFullSet);
+          show("nail-design-field").classList.toggle("is-hidden", houseSpecial);
+          show("house-special-details-field").classList.toggle("is-hidden", !houseSpecial);
+          const selectedArt = art[nailDesign.value];
+          const needsHands = Boolean(selectedArt && selectedArt.perHand);
+          show("nail-hands-field").classList.toggle("is-hidden", !needsHands || houseSpecial);
+          nailService.required = true; nailLength.required = isFullSet; nailHands.required = needsHands && !houseSpecial; houseSpecialPreference.required = houseSpecial;
+          if (!chosen) {
+            total.textContent = "$0"; before.textContent = "$0"; after.textContent = "$0";
+            selection.textContent = "Choose a nail service to begin."; cta.setAttribute("aria-disabled","true"); return;
+          }
+          const ready = (!isFullSet || nailLength.value) && (!needsHands || nailHands.value) && (!houseSpecial || houseSpecialPreference.value);
+          let amount = chosen.price, details = [chosen.name];
+          if (isFullSet && nailLength.value) { amount = fullSetPrices[nailLength.value]; details.push(fullSetNames[nailLength.value] + " length"); }
+          if (isFullSet && nailBreakage.checked) details.push("new set for 3+ broken nails");
+          if (!houseSpecial && selectedArt) {
+            const artAmount = selectedArt.perHand ? selectedArt.price * Number(nailHands.value || 0) : selectedArt.price;
+            amount += artAmount; details.push(selectedArt.name + (selectedArt.perHand && nailHands.value ? " · " + (nailHands.value === "1" ? "one hand" : "both hands") : ""));
+          }
+          if (houseSpecial) details.push(houseSpecialPreference.value === "length" ? "you choose the length · Ty chooses the shape and design" : houseSpecialPreference.value === "shape" ? "you choose the shape · Ty chooses the length and design" : "choose length or shape");
+          total.textContent = cash(amount); cta.setAttribute("aria-disabled", ready ? "false" : "true");
+          selection.textContent = ready ? details.join(" · ") : houseSpecial ? "Choose whether you would like to select the length or shape." : isFullSet && !nailLength.value ? "Choose a full-set length to finish your quote." : "Choose one or both hands for the nail-art price.";
+          const remaining = Math.max(0, amount - 10); before.textContent = ready ? cash(remaining / 2) : "$0"; after.textContent = ready ? cash(remaining / 2) : "$0";
+        }
+        [service,nailService,nailLength,nailDesign,nailHands,nailBreakage,houseSpecialPreference].forEach(input => input.addEventListener("change", () => setTimeout(updateNailQuote, 20)));
+        updateNailQuote();
+      })();
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+      import { arrayUnion, collection, doc, getDoc, getFirestore, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+      const firebaseConfig = { apiKey: "AIzaSyA2xhZQGl1QhKuU7xDkmaQl7ukqWT0JXIM", authDomain: "day2day-workout-dashboard.firebaseapp.com", projectId: "day2day-workout-dashboard", storageBucket: "day2day-workout-dashboard.firebasestorage.app", messagingSenderId: "1073761538282", appId: "1:1073761538282:web:12186389801cc1e7be0793" };
+      const db = getFirestore(initializeApp(firebaseConfig));
+      const STRIPE_URL = "https://book.stripe.com/5kQ3cu4YF8VZeJ84re48000";
+      const form = document.getElementById("quote-form");
+      const dateInput = document.getElementById("appointment-date");
+      const timeInput = document.getElementById("appointment-time");
+      const slotGrid = document.getElementById("slot-grid");
+      const availabilityHelp = document.getElementById("availability-help");
+      const bookingButton = document.getElementById("booking-cta");
+      const statusBox = document.createElement("p");
+      statusBox.id = "booking-status";
+      statusBox.className = "booking-status";
+      bookingButton.insertAdjacentElement("afterend", statusBox);
+      const firstName = document.getElementById("client-first-name");
+      const lastName = document.getElementById("client-last-name");
+      const email = document.getElementById("client-email");
+      const phone = document.getElementById("client-phone");
+      const serviceSelect = document.getElementById("service");
+      const quoteTotal = document.getElementById("quote-total");
+      const quoteSelection = document.getElementById("quote-selection");
+
+      dateInput.min = new Date().toISOString().slice(0,10);
+      let chosenSlot = "";
+      function setStatus(message, type) { statusBox.textContent = message || ""; statusBox.className = "booking-status" + (type ? " is-" + type : ""); }
+      function normalizeSlot(slot) { return String(slot || "").trim(); }
+      function selectSlot(slot, buttons) { chosenSlot = slot; timeInput.value = slot; buttons.forEach(button => button.classList.toggle("is-selected", button.dataset.slot === slot)); setStatus(""); }
+      function forceNailQuote() {}
+      serviceSelect.addEventListener("change", () => setTimeout(forceNailQuote, 1));
+      forceNailQuote();
+
+      async function loadSlots() {
+        chosenSlot = ""; timeInput.value = ""; slotGrid.replaceChildren();
+        if (!dateInput.value) { availabilityHelp.textContent = "Choose a date to see Ty’s open times. Hair and nail appointments share the same calendar."; return; }
+        availabilityHelp.textContent = "Checking open times…";
+        try {
+          const snap = await getDoc(doc(db, "beautyAvailability", dateInput.value));
+          if (!snap.exists()) { availabilityHelp.textContent = "No times are open for this date yet. Please choose another day."; return; }
+          const data = snap.data(), openSlots = Array.isArray(data.openSlots) ? data.openSlots.map(normalizeSlot) : [], reservedSlots = new Set(Array.isArray(data.reservedSlots) ? data.reservedSlots.map(normalizeSlot) : []);
+          const slots = openSlots.sort((a,b) => a.localeCompare(b, undefined, {numeric:true}));
+          if (!slots.length) { availabilityHelp.textContent = "No times are open for this date yet. Please choose another day."; return; }
+          const buttons = slots.map(slot => {
+            const button = document.createElement("button"); button.type = "button"; button.className = "time-slot"; button.dataset.slot = slot; button.textContent = reservedSlots.has(slot) ? slot + " · booked" : slot; button.disabled = reservedSlots.has(slot);
+            if (!button.disabled) button.addEventListener("click", () => selectSlot(slot, buttons));
+            return button;
+          });
+          slotGrid.append(...buttons); availabilityHelp.textContent = "Choose an open time below. Booked times are unavailable for both hair and nails.";
+        } catch (error) { availabilityHelp.textContent = "The calendar is not ready yet. Please try again shortly."; console.error(error); }
+      }
+      dateInput.addEventListener("change", loadSlots);
+
+      bookingButton.addEventListener("click", async event => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        if (!dateInput.value || !chosenSlot) { setStatus("Please choose an open appointment date and time.", "error"); return; }
+        const totalText = quoteTotal.textContent.replace(/[^0-9.]/g, "");
+        const appointment = {
+          firstName: firstName.value.trim(), lastName: lastName.value.trim(), email: email.value.trim().toLowerCase(), phone: phone.value.trim(),
+          date: dateInput.value, time: chosenSlot, service: quoteSelection.textContent, serviceCategory: serviceSelect.value === "nails" ? "nails" : "hair",
+          quoteTotal: Number(totalText || 0), notes: document.getElementById("appointment-notes").value.trim(),
+          accessories: document.getElementById("accessories").value.trim(), hairSpecifications: document.getElementById("hair-specs").value.trim(), houseSpecialPreference: document.getElementById("house-special-preference").value,
+          status: "pending_deposit", createdAt: serverTimestamp()
+        };
+        bookingButton.setAttribute("aria-disabled","true"); setStatus("Reserving your time…");
+        try {
+          await runTransaction(db, async transaction => {
+            const availabilityRef = doc(db, "beautyAvailability", appointment.date);
+            const availability = await transaction.get(availabilityRef);
+            if (!availability.exists()) throw new Error("That date is no longer available.");
+            const data = availability.data(), open = Array.isArray(data.openSlots) ? data.openSlots.map(normalizeSlot) : [], reserved = Array.isArray(data.reservedSlots) ? data.reservedSlots.map(normalizeSlot) : [];
+            if (!open.includes(appointment.time) || reserved.includes(appointment.time)) throw new Error("That time was just booked. Please choose another open time.");
+            transaction.update(availabilityRef, { reservedSlots: arrayUnion(appointment.time), updatedAt: serverTimestamp() });
+            transaction.set(doc(collection(db, "beautyAppointments")), appointment);
+          });
+          setStatus("Your time is held. Complete the $10 deposit in Stripe to send Ty your booking request.", "success");
+          window.open(STRIPE_URL, "_blank", "noopener");
+          await loadSlots();
+        } catch (error) {
+          console.error(error); bookingButton.setAttribute("aria-disabled","false"); setStatus(error.message || "We could not reserve that time. Please try another slot.", "error"); await loadSlots();
+        }
+      });
+    </script>
+
+  </body>
+</html>
