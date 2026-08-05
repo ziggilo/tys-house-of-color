@@ -80,6 +80,8 @@
             <div class="form-field is-hidden" id="nail-length-field"><label for="nail-length">Full-set length</label><select id="nail-length"><option value="">Choose a length</option><option value="small">Short — $25</option><option value="medium">Medium — $30</option><option value="long">Long — $40</option><option value="xl">XL — $45</option></select></div>
             <label class="toggle-field full is-hidden" id="nail-breakage-field"><input id="nail-breakage" type="checkbox" />I have 3 or more broken nails and need a new full set.</label>
             <div class="form-field full is-hidden" id="nail-design-field"><label for="nail-design">Nail-art add-on (optional)</label><select id="nail-design"><option value="">No design add-on</option><option value="handdrawn">Unlimited hand-drawn art — +$10</option><option value="threeD">Unlimited 3D art — +$15</option><option value="stickers">Unlimited stickers — +$10</option><option value="rhinestones">Unlimited rhinestones — +$10 flat</option><option value="freestyle">Unlimited freestyle design — +$30 flat</option></select></div><div class="form-field full is-hidden" id="house-special-details-field"><label for="house-special-preference">House Special — choose your focus</label><select id="house-special-preference"><option value="">Choose length or shape</option><option value="length">I would like to choose the length</option><option value="shape">I would like to choose the shape</option></select><p class="field-hint">Ty creates the design for every House Special.</p></div>
+            <div class="form-field is-hidden" id="house-length-field"><label for="house-length">Choose your length</label><select id="house-length"><option value="">Choose a length</option><option value="short">Short</option><option value="medium">Medium</option><option value="long">Long</option><option value="xl">XL</option></select></div>
+            <div class="form-field is-hidden" id="house-shape-field"><label for="house-shape">Choose your shape</label><select id="house-shape"><option value="">Choose a shape</option><option value="square">Square</option><option value="stiletto">Stiletto</option><option value="almond">Almond</option><option value="coffin">Coffin</option><option value="duck">Duck shape</option></select></div>
             <div class="form-field full"><label for="accessories">Nail extras (optional)</label><input id="accessories" type="text" placeholder="Rhinestones, 3D pieces, or other nail details" /></div>
             <div class="form-field full"><label id="appointment-notes-label" for="appointment-notes">Nail design request, allergies, or notes (optional)</label><textarea id="appointment-notes" rows="4" placeholder="Describe your requested design, any allergies or sensitivities, and anything else Ty should know."></textarea><p class="field-hint" id="appointment-notes-hint">Please share any design details or allergy information that will help Ty prepare.</p></div>
           
@@ -97,9 +99,9 @@
 
     <script>
       (() => {
-        const service = document.getElementById("service"), nailService = document.getElementById("nail-service"), nailLength = document.getElementById("nail-length"), nailDesign = document.getElementById("nail-design"), nailBreakage = document.getElementById("nail-breakage"), houseSpecialPreference = document.getElementById("house-special-preference");
+        const service = document.getElementById("service"), nailService = document.getElementById("nail-service"), nailLength = document.getElementById("nail-length"), nailDesign = document.getElementById("nail-design"), nailBreakage = document.getElementById("nail-breakage"), houseSpecialPreference = document.getElementById("house-special-preference"), houseLength = document.getElementById("house-length"), houseShape = document.getElementById("house-shape");
         const show = id => document.getElementById(id);
-        const nailFields = ["nail-service-field","nail-length-field","nail-breakage-field","nail-design-field","house-special-details-field"];
+        const nailFields = ["nail-service-field","nail-length-field","nail-breakage-field","nail-design-field","house-special-details-field","house-length-field","house-shape-field"];
         const total = document.getElementById("quote-total"), selection = document.getElementById("quote-selection"), before = document.getElementById("before"), after = document.getElementById("after"), cta = document.getElementById("booking-cta");
         const cash = value => "$" + value.toFixed(2).replace(".00","");
         const fullSetPrices = {small:25,medium:30,long:40,xl:45};
@@ -120,25 +122,27 @@
           show("nail-breakage-field").classList.toggle("is-hidden", !isFullSet);
           show("nail-design-field").classList.toggle("is-hidden", houseSpecial);
           show("house-special-details-field").classList.toggle("is-hidden", !houseSpecial);
+          show("house-length-field").classList.toggle("is-hidden", !houseSpecial || houseSpecialPreference.value !== "length");
+          show("house-shape-field").classList.toggle("is-hidden", !houseSpecial || houseSpecialPreference.value !== "shape");
           const selectedArt = art[nailDesign.value];
-          nailService.required = true; nailLength.required = isFullSet; houseSpecialPreference.required = houseSpecial;
+          nailService.required = true; nailLength.required = isFullSet; houseSpecialPreference.required = houseSpecial; houseLength.required = houseSpecial && houseSpecialPreference.value === "length"; houseShape.required = houseSpecial && houseSpecialPreference.value === "shape";
           if (!chosen) {
             total.textContent = "$0"; before.textContent = "$0"; after.textContent = "$0";
             selection.textContent = "Choose a nail service to begin."; cta.setAttribute("aria-disabled","true"); return;
           }
-          const ready = (!isFullSet || nailLength.value) && (!houseSpecial || houseSpecialPreference.value);
+          const ready = (!isFullSet || nailLength.value) && (!houseSpecial || (houseSpecialPreference.value === "length" ? houseLength.value : houseSpecialPreference.value === "shape" ? houseShape.value : false));
           let amount = chosen.price, details = [chosen.name];
           if (isFullSet && nailLength.value) { amount = fullSetPrices[nailLength.value]; details.push(fullSetNames[nailLength.value] + " length"); }
           if (isFullSet && nailBreakage.checked) details.push("new set for 3+ broken nails");
           if (!houseSpecial && selectedArt) {
             amount += selectedArt.price; details.push(selectedArt.name);
           }
-          if (houseSpecial) details.push(houseSpecialPreference.value === "length" ? "you choose the length · Ty chooses the shape and design" : houseSpecialPreference.value === "shape" ? "you choose the shape · Ty chooses the length and design" : "choose length or shape");
+          if (houseSpecial) details.push(houseSpecialPreference.value === "length" && houseLength.value ? houseLength.options[houseLength.selectedIndex].text + " length · Ty chooses the shape and design" : houseSpecialPreference.value === "shape" && houseShape.value ? houseShape.options[houseShape.selectedIndex].text + " shape · Ty chooses the length and design" : "choose length or shape");
           total.textContent = cash(amount); cta.setAttribute("aria-disabled", ready ? "false" : "true");
-          selection.textContent = ready ? details.join(" · ") : houseSpecial ? "Choose whether you would like to select the length or shape." : isFullSet && !nailLength.value ? "Choose a full-set length to finish your quote." : "Choose a nail service to finish your quote.";
+          selection.textContent = ready ? details.join(" · ") : houseSpecial ? houseSpecialPreference.value === "length" ? "Choose your preferred length to finish your quote." : houseSpecialPreference.value === "shape" ? "Choose your preferred shape to finish your quote." : "Choose whether you would like to select the length or shape." : isFullSet && !nailLength.value ? "Choose a full-set length to finish your quote." : "Choose a nail service to finish your quote.";
           const remaining = Math.max(0, amount - 10); before.textContent = ready ? cash(remaining / 2) : "$0"; after.textContent = ready ? cash(remaining / 2) : "$0";
         }
-        [service,nailService,nailLength,nailDesign,nailBreakage,houseSpecialPreference].forEach(input => input.addEventListener("change", () => setTimeout(updateNailQuote, 20)));
+        [service,nailService,nailLength,nailDesign,nailBreakage,houseSpecialPreference,houseLength,houseShape].forEach(input => input.addEventListener("change", () => setTimeout(updateNailQuote, 20)));
         updateNailQuote();
       })();
     </script>
@@ -206,7 +210,7 @@
           firstName: firstName.value.trim(), lastName: lastName.value.trim(), email: email.value.trim().toLowerCase(), phone: phone.value.trim(),
           date: dateInput.value, time: chosenSlot, service: quoteSelection.textContent, serviceCategory: serviceSelect.value === "nails" ? "nails" : "hair",
           quoteTotal: Number(totalText || 0), notes: document.getElementById("appointment-notes").value.trim(),
-          accessories: document.getElementById("accessories").value.trim(), hairSpecifications: "", houseSpecialPreference: document.getElementById("house-special-preference").value,
+          accessories: document.getElementById("accessories").value.trim(), hairSpecifications: "", houseSpecialPreference: document.getElementById("house-special-preference").value, houseSpecialSelection: document.getElementById("house-special-preference").value === "length" ? document.getElementById("house-length").value : document.getElementById("house-special-preference").value === "shape" ? document.getElementById("house-shape").value : "",
           status: "pending_deposit", createdAt: serverTimestamp()
         };
         bookingButton.setAttribute("aria-disabled","true"); setStatus("Reserving your time…");
