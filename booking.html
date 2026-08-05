@@ -75,15 +75,20 @@
         <section class="booking-card" aria-labelledby="booking-form-title">
           <h2 id="booking-form-title">Build your appointment</h2><p>Select a service to see your total before continuing to secure booking.</p>
           <form id="quote-form"><div class="form-grid">
-            <div class="form-field full"><label for="service">Style or service</label><select id="service" required><option value="">Choose a service</option><option value="nails">Nail appointment — price confirmed by Ty</option><option value="natural">Natural styles</option><option value="box">Box braids — starts at $100</option><option value="knotless">Knotless braids — starts at $110</option><option value="twists">Twists — $120</option><option value="fauxLocs">Faux locs — $120</option><option value="feedin8">8 feed-in cornrows — $75</option><option value="feedin10">10 feed-in cornrows — $85</option><option value="retwist">Retwist — $45</option></select></div>
+            <div class="form-field full"><label for="service">Style or service</label><select id="service" required><option value="">Choose a service</option><option value="nails">Nail services</option><option value="natural">Natural styles</option><option value="box">Box braids — starts at $100</option><option value="knotless">Knotless braids — starts at $110</option><option value="twists">Twists — $120</option><option value="fauxLocs">Faux locs — $120</option><option value="feedin8">8 feed-in cornrows — $75</option><option value="feedin10">10 feed-in cornrows — $85</option><option value="retwist">Retwist — $45</option></select></div>
+            <div class="form-field full is-hidden" id="nail-service-field"><label for="nail-service">Nail service</label><select id="nail-service"><option value="">Choose a nail service</option><option value="gel">Gel manicure — $20</option><option value="fullset">Full set — choose length</option><option value="fill">Fill-in — $20</option><option value="house">House Special — $60 flat</option></select><p class="field-hint">Ty specializes in Polygel and gel manicure services.</p></div>
+            <div class="form-field is-hidden" id="nail-length-field"><label for="nail-length">Full-set length</label><select id="nail-length"><option value="">Choose a length</option><option value="small">Short — $25</option><option value="medium">Medium — $30</option><option value="long">Long — $40</option><option value="xl">XL — $45</option></select></div>
+            <label class="toggle-field full is-hidden" id="nail-breakage-field"><input id="nail-breakage" type="checkbox" />I have 3 or more broken nails and need a new full set.</label>
+            <div class="form-field full is-hidden" id="nail-design-field"><label for="nail-design">Nail-art add-on (optional)</label><select id="nail-design"><option value="">No design add-on</option><option value="handdrawn">Hand-drawn design — +$10 per hand</option><option value="threeD">3D design — +$15 per hand</option><option value="stickers">Stickers — +$10 per hand</option><option value="freestyle">Freestyle design — +$30 flat</option></select></div>
+            <div class="form-field is-hidden" id="nail-hands-field"><label for="nail-hands">Hands for nail art</label><select id="nail-hands"><option value="">Choose one or both hands</option><option value="1">One hand</option><option value="2">Both hands</option></select></div>
             <div class="form-field full is-hidden" id="natural-style-field"><label for="natural-style">Natural style or service</label><select id="natural-style"><option value="">Choose a natural style or service</option><option value="prepart">Pre-parting — starts at $20</option><option value="cornrows">Cornrows — $50</option><option value="twistStyle">Twist &amp; style — $75</option><option value="naturalStyle">Natural style (Bantu knots, plaits, etc.) — $75</option></select></div>
             <div class="form-field is-hidden" id="size-field"><label for="size">Braid size</label><select id="size"><option value="">Choose a size</option><option value="large">Large — +$20</option><option value="medium">Medium — +$25</option><option value="small">Small — +$30</option><option value="xs">XS — +$35</option></select></div>
             <div class="form-field is-hidden" id="length-field"><label for="length">Braid length</label><select id="length"><option value="">Choose a length</option><option value="above">Above shoulder</option><option value="armpit">Armpit</option><option value="midback">Mid-back</option><option value="waist">Waist</option><option value="xl">XL — past waist</option></select><p class="field-hint" id="length-hint"></p></div>
             <div class="form-field is-hidden" id="prepart-size-field"><label for="prepart-size">Pre-parting size</label><select id="prepart-size"><option value="">Choose a size</option><option value="large">Large — included with $20 base</option><option value="medium">Medium — +$5</option><option value="small">Small — +$10</option><option value="xs">XS — +$15</option></select><p class="field-hint">Large pre-parting is included in the $20 base price.</p></div>
             <label class="toggle-field is-hidden full" id="retwist-field"><input id="retwist-style" type="checkbox" />Add a style to the retwist (+$10)</label>
-            <div class="form-field full"><label for="curl-style">French curl hair or boho (optional)</label><select id="curl-style"><option value="">No curl or boho add-on</option><option value="french">French curl hair — +$10</option><option value="boho">Boho — +$10</option></select></div>
-            <label class="toggle-field full"><input id="pick-and-drop" type="checkbox" />Add pick &amp; drop braids (+$15)</label>
-            <label class="toggle-field full"><input id="hair-provided" type="checkbox" />I need hair provided (+$10)</label>
+            <div class="form-field full" id="hair-addons-field"><label for="curl-style">French curl hair or boho (optional)</label><select id="curl-style"><option value="">No curl or boho add-on</option><option value="french">French curl hair — +$10</option><option value="boho">Boho — +$10</option></select></div>
+            <label class="toggle-field full" id="pick-and-drop-field"><input id="pick-and-drop" type="checkbox" />Add pick &amp; drop braids (+$15)</label>
+            <label class="toggle-field full" id="hair-provided-field"><input id="hair-provided" type="checkbox" />I need hair provided (+$10)</label>
             <div class="form-field full is-hidden" id="hair-specs-field"><label for="hair-specs">Hair specifications</label><input id="hair-specs" type="text" placeholder="Color, preferred length, or other hair details" /></div>
             <div class="form-field full"><label for="accessories">Accessories (optional)</label><input id="accessories" type="text" placeholder="Beads, tinsel, charms, or other accessories" /></div>
             <div class="form-field full"><label for="appointment-notes">Anything else Ty should know? (optional)</label><textarea id="appointment-notes" rows="4" placeholder="Hair condition, trim request, S4S (service for service), guests, or anything else you would like to mention"></textarea><p class="field-hint">Please include any details that will help Ty prepare for your appointment.</p></div>
@@ -94,7 +99,7 @@
             <div class="form-field"><label for="client-phone">Phone number</label><input id="client-phone" type="tel" autocomplete="tel" inputmode="tel" required /></div>
             <div class="form-field full"><label for="appointment-date">Choose your appointment date</label><input id="appointment-date" type="date" required /><div class="availability-panel"><h3>Available times</h3><p class="availability-help" id="availability-help">Choose a date to see Ty’s open times. Hair and nail appointments share the same calendar.</p><div class="slot-grid" id="slot-grid" aria-live="polite"></div></div><input id="appointment-time" type="hidden" required /></div>
           </div></form>
-          <details class="price-list"><summary>View current service pricing</summary><ul><li>Box braids — $100; Knotless braids — $110</li><li>Twists and faux locs — $120</li><li>8 / 10 feed-in cornrows — $75 / $85</li><li>Natural services: Cornrows — $50; Twist &amp; style — $75; Bantu knots, plaits, and other natural styles — $75</li><li>Pre-parting: Large — $20; Medium — $25; Small — $30; XS — $35</li><li>French curl hair or boho — +$10; Pick &amp; drop braids — +$15</li><li>Retwist — $45; styling add-on — $10</li><li>Braid size: Large +$20, Medium +$25, Small +$30, XS +$35</li><li>Box and knotless lengths: Above shoulder +$10, Armpit +$20, Mid-back +$25, Waist +$30, XL +$50</li></ul></details>
+          <details class="price-list"><summary>View current service pricing</summary><ul><li>Nail services: Gel manicure — $20; Full set: Short — $25, Medium — $30, Long — $40, XL — $45; Fill-in — $20; House Special — $60</li><li>Nail art: Hand-drawn — +$10 per hand; 3D — +$15 per hand; Stickers — +$10 per hand; Freestyle — +$30</li><li>Box braids — $100; Knotless braids — $110</li><li>Twists and faux locs — $120</li><li>8 / 10 feed-in cornrows — $75 / $85</li><li>Natural services: Cornrows — $50; Twist &amp; style — $75; Bantu knots, plaits, and other natural styles — $75</li><li>Pre-parting: Large — $20; Medium — $25; Small — $30; XS — $35</li><li>French curl hair or boho — +$10; Pick &amp; drop braids — +$15</li><li>Retwist — $45; styling add-on — $10</li><li>Braid size: Large +$20, Medium +$25, Small +$30, XS +$35</li><li>Box and knotless lengths: Above shoulder +$10, Armpit +$20, Mid-back +$25, Waist +$30, XL +$50</li></ul></details>
         </section>
         <aside class="booking-card summary-card" aria-live="polite"><p class="eyebrow">Your quote</p><div class="policy-box"><h3>Before your appointment</h3><ul><li>Please come washed and conditioned. Blow-dry services are included.</li><li>The first half of your remaining balance is due before your service begins; the second half is due after the service is completed.</li><li>Deposits are non-refundable.</li><li>Arrivals 30 minutes late without prior communication will be canceled and require a new appointment.</li><li>Bringing one or two guests? Please let Ty know. Food will be provided.</li><li>Participating in S4S? Mention it in the description so your final total can be adjusted.</li></ul></div><p class="quote-label">Estimated total</p><p class="quote-total" id="quote-total">$0</p><p class="quote-selection" id="quote-selection">Choose a service to begin.</p><div class="payment-lines"><div class="payment-line"><span>Deposit due today</span><b>$10</b></div><div class="payment-line"><span>Due before appointment</span><b id="before">$0</b></div><div class="payment-line"><span>Due after appointment</span><b id="after">$0</b></div></div><p class="deposit-note">Your $10 deposit goes toward your total. The remaining balance is split into two equal payments: one before your appointment and one after.</p><a class="booking-cta" id="booking-cta" href="https://book.stripe.com/5kQ3cu4YF8VZeJ84re48000" target="_blank" rel="noreferrer" aria-disabled="true">Reserve your time &amp; pay $10 deposit</a><p class="secure-note">Choose an open time, then reserve it and pay your $10 deposit securely through Stripe. Ty will confirm your appointment details after payment.</p></aside>
       </div>
@@ -153,6 +158,59 @@
         recalc();
       })();
     </script>
+    <script>
+      (() => {
+        const service = document.getElementById("service"), nailService = document.getElementById("nail-service"), nailLength = document.getElementById("nail-length"), nailDesign = document.getElementById("nail-design"), nailHands = document.getElementById("nail-hands"), nailBreakage = document.getElementById("nail-breakage");
+        const show = id => document.getElementById(id);
+        const nailFields = ["nail-service-field","nail-length-field","nail-breakage-field","nail-design-field","nail-hands-field"];
+        const hairOnlyFields = ["hair-addons-field","pick-and-drop-field","hair-provided-field"];
+        const total = document.getElementById("quote-total"), selection = document.getElementById("quote-selection"), before = document.getElementById("before"), after = document.getElementById("after"), cta = document.getElementById("booking-cta");
+        const cash = value => "$" + value.toFixed(2).replace(".00","");
+        const fullSetPrices = {small:25,medium:30,long:40,xl:45};
+        const fullSetNames = {small:"Short",medium:"Medium",long:"Long",xl:"XL"};
+        const art = {handdrawn:{name:"hand-drawn design",price:10,perHand:true},threeD:{name:"3D design",price:15,perHand:true},stickers:{name:"stickers",price:10,perHand:true},freestyle:{name:"freestyle design",price:30}};
+        const nailServices = {gel:{name:"Gel manicure",price:20},fullset:{name:"Full set",price:0},fill:{name:"Fill-in",price:20},house:{name:"House Special",price:60}};
+        function updateNailQuote() {
+          const isNail = service.value === "nails";
+          nailFields.forEach(id => show(id).classList.toggle("is-hidden", !isNail));
+          hairOnlyFields.forEach(id => show(id).classList.toggle("is-hidden", isNail));
+          show("hair-specs-field").classList.toggle("is-hidden", isNail || !document.getElementById("hair-provided").checked);
+          if (!isNail) {
+            nailService.required = nailLength.required = nailHands.required = false;
+            return;
+          }
+          const chosen = nailServices[nailService.value];
+          const isFullSet = nailService.value === "fullset";
+          const houseSpecial = nailService.value === "house";
+          show("nail-length-field").classList.toggle("is-hidden", !isFullSet);
+          show("nail-breakage-field").classList.toggle("is-hidden", !isFullSet);
+          show("nail-design-field").classList.toggle("is-hidden", houseSpecial);
+          const selectedArt = art[nailDesign.value];
+          const needsHands = Boolean(selectedArt && selectedArt.perHand);
+          show("nail-hands-field").classList.toggle("is-hidden", !needsHands || houseSpecial);
+          nailService.required = true; nailLength.required = isFullSet; nailHands.required = needsHands && !houseSpecial;
+          if (!chosen) {
+            total.textContent = "$0"; before.textContent = "$0"; after.textContent = "$0";
+            selection.textContent = "Choose a nail service to begin."; cta.setAttribute("aria-disabled","true"); return;
+          }
+          const ready = (!isFullSet || nailLength.value) && (!needsHands || nailHands.value) && !houseSpecial || houseSpecial;
+          let amount = chosen.price, details = [chosen.name];
+          if (isFullSet && nailLength.value) { amount = fullSetPrices[nailLength.value]; details.push(fullSetNames[nailLength.value] + " length"); }
+          if (isFullSet && nailBreakage.checked) details.push("new set for 3+ broken nails");
+          if (!houseSpecial && selectedArt) {
+            const artAmount = selectedArt.perHand ? selectedArt.price * Number(nailHands.value || 0) : selectedArt.price;
+            amount += artAmount; details.push(selectedArt.name + (selectedArt.perHand && nailHands.value ? " · " + (nailHands.value === "1" ? "one hand" : "both hands") : ""));
+          }
+          if (houseSpecial) details.push("you choose the shape and length · Ty chooses the design");
+          total.textContent = cash(amount); cta.setAttribute("aria-disabled", ready ? "false" : "true");
+          selection.textContent = ready ? details.join(" · ") : isFullSet && !nailLength.value ? "Choose a full-set length to finish your quote." : "Choose one or both hands for the nail-art price.";
+          const remaining = Math.max(0, amount - 10); before.textContent = ready ? cash(remaining / 2) : "$0"; after.textContent = ready ? cash(remaining / 2) : "$0";
+        }
+        [service,nailService,nailLength,nailDesign,nailHands,nailBreakage].forEach(input => input.addEventListener("change", () => setTimeout(updateNailQuote, 20)));
+        updateNailQuote();
+      })();
+    </script>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
       import { arrayUnion, collection, doc, getDoc, getFirestore, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -183,7 +241,7 @@
       function setStatus(message, type) { statusBox.textContent = message || ""; statusBox.className = "booking-status" + (type ? " is-" + type : ""); }
       function normalizeSlot(slot) { return String(slot || "").trim(); }
       function selectSlot(slot, buttons) { chosenSlot = slot; timeInput.value = slot; buttons.forEach(button => button.classList.toggle("is-selected", button.dataset.slot === slot)); setStatus(""); }
-      function forceNailQuote() { if (serviceSelect.value !== "nails") return; quoteTotal.textContent = "TBD"; quoteSelection.textContent = "Nail appointment · final price confirmed by Ty"; document.getElementById("before").textContent = "TBD"; document.getElementById("after").textContent = "TBD"; bookingButton.setAttribute("aria-disabled","false"); }
+      function forceNailQuote() {}
       serviceSelect.addEventListener("change", () => setTimeout(forceNailQuote, 1));
       forceNailQuote();
 
@@ -211,12 +269,11 @@
         event.preventDefault();
         if (!form.reportValidity()) return;
         if (!dateInput.value || !chosenSlot) { setStatus("Please choose an open appointment date and time.", "error"); return; }
-        const hairIsNail = serviceSelect.value === "nails";
         const totalText = quoteTotal.textContent.replace(/[^0-9.]/g, "");
         const appointment = {
           firstName: firstName.value.trim(), lastName: lastName.value.trim(), email: email.value.trim().toLowerCase(), phone: phone.value.trim(),
-          date: dateInput.value, time: chosenSlot, service: hairIsNail ? "Nail appointment" : quoteSelection.textContent, serviceCategory: hairIsNail ? "nails" : "hair",
-          quoteTotal: hairIsNail ? null : Number(totalText || 0), notes: document.getElementById("appointment-notes").value.trim(),
+          date: dateInput.value, time: chosenSlot, service: quoteSelection.textContent, serviceCategory: serviceSelect.value === "nails" ? "nails" : "hair",
+          quoteTotal: Number(totalText || 0), notes: document.getElementById("appointment-notes").value.trim(),
           accessories: document.getElementById("accessories").value.trim(), hairSpecifications: document.getElementById("hair-specs").value.trim(),
           status: "pending_deposit", createdAt: serverTimestamp()
         };
