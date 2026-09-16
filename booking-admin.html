@@ -5,6 +5,8 @@
   const userHandle = new TextEncoder().encode(username);
   const sessionKey = "tysHouseAdminPasskeyUnlocked";
   const localIdKey = "tysHouseAdminPasskeyId";
+  const trustedUntilKey = "tysHouseAdminTrustedUntil";
+  const trustedForMs = 30 * 24 * 60 * 60 * 1000;
 
   const supported = () => Boolean(window.PublicKeyCredential && navigator.credentials);
   const randomBytes = () => crypto.getRandomValues(new Uint8Array(32));
@@ -20,6 +22,8 @@
     return panel && !panel.classList.contains("hidden") && document.body.textContent.includes("Signed in as " + adminEmail);
   };
   const signOut = () => Array.from(document.querySelectorAll("button")).find(button => button.textContent.trim() === "Sign out");
+  const trustDevice = () => localStorage.setItem(trustedUntilKey, String(Date.now() + trustedForMs));
+  const deviceIsTrusted = () => Number(localStorage.getItem(trustedUntilKey) || 0) > Date.now();
 
   function addStyles() {
     if (document.getElementById("passkey-style")) return;
@@ -50,7 +54,8 @@
     if (!credential) throw new Error("No passkey was created.");
     localStorage.setItem(localIdKey, credential.id);
     sessionStorage.setItem(sessionKey, "1");
-    status.textContent = "Passkey saved. Your admin calendar is unlocked.";
+    trustDevice();
+    status.textContent = "Passkey saved. This device will stay trusted for 30 days.";
     status.className = "status success";
     setTimeout(removeGate, 450);
   }
@@ -70,13 +75,14 @@
       throw new Error("This passkey does not belong to the Ty's House of Color administrator account.");
     }
     sessionStorage.setItem(sessionKey, "1");
-    status.textContent = "Identity confirmed. Opening your calendar...";
+    trustDevice();
+    status.textContent = "Identity confirmed. This device will stay trusted for 30 days.";
     status.className = "status success";
     setTimeout(removeGate, 250);
   }
 
   function showGate() {
-    if (document.getElementById("admin-passkey-gate") || sessionStorage.getItem(sessionKey) === "1") return;
+    if (document.getElementById("admin-passkey-gate") || sessionStorage.getItem(sessionKey) === "1" || deviceIsTrusted()) return;
     addStyles();
     document.body.classList.add("passkey-locked");
     const gate = document.createElement("section");
@@ -92,6 +98,7 @@
       try { await createPasskey(status); } catch (error) { status.textContent = passkeyError(error); status.className = "status error"; }
     });
     gate.querySelector("#passkey-recovery").addEventListener("click", () => {
+      localStorage.removeItem(trustedUntilKey);
       removeGate();
       const button = signOut();
       if (button) button.click();
@@ -116,6 +123,10 @@
         await createPasskey(note);
       } catch (error) { alert(passkeyError(error)); }
     });
+    button.addEventListener("click", () => {
+      localStorage.removeItem(trustedUntilKey);
+      sessionStorage.removeItem(sessionKey);
+    }, { once: true });
     button.parentElement?.insertBefore(control, button);
   }
 
@@ -197,11 +208,12 @@ header{padding:1.2rem clamp(1rem,5vw,4rem);border-bottom:1px solid var(--line);d
 </div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { browserLocalPersistence, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, setPersistence, signInWithEmailLink, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { arrayRemove, arrayUnion, collection, doc, getDoc, getFirestore, onSnapshot, orderBy, query, runTransaction, serverTimestamp, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyA2xhZQGl1QhKuU7xDkmaQl7ukqWT0JXIM",authDomain:"day2day-workout-dashboard.firebaseapp.com",projectId:"day2day-workout-dashboard",storageBucket:"day2day-workout-dashboard.firebasestorage.app",messagingSenderId:"1073761538282",appId:"1:1073761538282:web:12186389801cc1e7be0793"};
 const ADMIN_EMAILS=new Set(["tyrinolivia2017@gmail.com","tyshouseofcolor@gmail.com"]);
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
 const today=new Date().toISOString().slice(0,10);
 const el=id=>document.getElementById(id);
 const loginPanel=el("login-panel"),adminPanel=el("admin-panel"),loginStatus=el("login-status"),availabilityStatus=el("availability-status"),manualStatus=el("manual-status"),list=el("appointment-list"),calendarGrid=el("calendar-grid"),calendarGridLarge=el("calendar-grid-large"),calendarDetails=el("calendar-day-details"),calendarDetailsLarge=el("calendar-day-details-large"),calendarModal=el("calendar-modal");
